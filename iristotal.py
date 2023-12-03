@@ -1,0 +1,33 @@
+import os
+import pandas as pd
+from sklearn.decomposition import PCA
+import matplotlib.pyplot as plt
+
+# Specify file path
+file_path = 'C:/Users/Bin/Desktop/Machine Learning 2/iris.data'
+
+# Check if the file exists
+if os.path.exists(file_path):
+    # Load Iris dataset
+    iris_data = pd.read_csv(file_path, header=None, names=['sepal_length', 'sepal_width', 'petal_length', 'petal_width', 'class'])
+
+    # Separate features and target variable
+    X = iris_data.drop('class', axis=1)
+    y = iris_data['class']
+
+    # Apply PCA
+    pca = PCA()
+    X_pca = pca.fit_transform(X)
+
+    # Print cumulative explained variance ratio for the first two components
+    cumulative_explained_variance_ratio = pca.explained_variance_ratio_.cumsum()
+    print(f"Cumulative Explained Variance Ratio for the first two components (Iris Dataset): {cumulative_explained_variance_ratio[1]}")
+
+    # Plot explained variance ratio
+    plt.bar(range(1, len(pca.explained_variance_ratio_) + 1), pca.explained_variance_ratio_)
+    plt.xlabel('Principal Component')
+    plt.ylabel('Explained Variance Ratio')
+    plt.title('Explained Variance Ratio of Principal Components (Iris Dataset)')
+    plt.show()
+else:
+    print(f"The file {file_path} does not exist.")
